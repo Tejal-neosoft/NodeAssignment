@@ -1,0 +1,1 @@
+*{"name":"tejal","age":"21","salary":"10000","city":"thane"}*{"name":"tejal","age":"21","salary":"234555","city":"germany"}

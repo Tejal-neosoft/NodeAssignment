@@ -1,0 +1,90 @@
+import fs from 'fs'
+import http from 'http'
+import {parse} from 'querystring'
+
+let isLog = true
+http.createServer((req,res)=>{
+    if(req.method==="GET"&&req.url === '/addEmployee'){
+       res.writeHead(200,{"Content-type":"text/html"})
+       fs.readFile("./addEmp.html","utf-8",(err,data)=>{
+           if(err){
+               console.log(err);
+           }
+           else{
+               res.write(data)
+               res.end()
+           }
+       })
+    } 
+   
+     else if(req.method=="POST"&&req.url==='/'){
+        let body='';
+        req.on('data',(data)=>{
+            body = data
+            fs.appendFile('emp.txt',body,()=>{
+                console.log("data appended");
+            })
+ 
+            // body= parse(data.toString());
+            // fs.appendFile('data.txt',body.toString(),()=>{
+            //     console.log("Data appended");
+            // })
+        //      body = `<!DOCTYPE html>
+        //     <html lang="en">
+        //     <head>
+        //         <meta charset="UTF-8">
+        //         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        //         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        //         <title>Document</title>
+        //     </head>
+        //     <body>
+        //   <button>Add Employee</button>
+
+        //         <table>
+        //             <thead>
+        //                 <th>Name</th>
+        //                 <th>Age</th>
+        //                 <th>Salary</th>
+        //                 <th>City</th>
+        //             </thead>
+        //             <tbody>
+        //                 <tr>
+        //                     <td>${body.name}</td>
+        //                     <td>${body.age}</td>
+        //                     <td>${body.salary}</td>
+        //                     <td>${body.city}</td>
+        //                 </tr>
+                        
+        //             </tbody>
+        //         </table>
+        //     </body>
+        //     </html>`
+        })
+        req.on('end',()=>{
+            // res.send('<button>window.location.href="/addEmployee";</button>');
+
+           
+
+            fs.readFile('emp.txt','utf-8',(err,data)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    res.write(data)
+                res.end()
+                }
+                
+            })
+            // res.writeHead(200,{'Content-type':'text/html'});
+            // res.write(body,()=>{
+            //     res.end();
+            // })
+           
+        })
+    }
+     
+   
+})
+.listen(6677,()=>{
+    console.log("listening on port 6677");
+})
